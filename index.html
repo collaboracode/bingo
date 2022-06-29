@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <title></title>
+	<style>
+	</style>
+  </head>
+  <body>
+  <div id='gamebody'>
+  
+  </div>
+  <script>
+  // https://bingorules.org/bingo-rules.htm
+/* The numbers in the columns of a Bingo ticket are selected at random and printed according to the range - numbers in the B column are from 1 to 15, in the I column between 16 and 30, in the N column (that contains four numbers and the free (blank) space) between 31 and 45, in the G column between 46 and 60, and in the O column between 61 and 75. */
+    
+	class BingoGame {
+	  
+		constructor(cards) {
+		this.won = 0;
+		this.cards = cards;
+		this.cardArray = [];
+		this.MAX_NUMBERS = 75;
+		this.numberBag = Array.from(Array(this.MAX_NUMBERS).keys(),n=>n+1);
+		this.randomizeNumbers();
+		
+		//console.log(this.numberBag);
+		for (let i=0; i < cards; i++) {
+			this.cardArray.push(new BingoCard());
+		}
+	  }
+	  
+	  nextTurn() {
+	   // shuffle numbers first
+		this.randomizeNumbers();
+		// get new number
+		let newNumber = this.numberBag.pop();
+	  }
+	  
+	  randomizeNumbers() {
+		//https://www.w3docs.com/snippets/javascript/how-to-randomize-shuffle-a-javascript-array.html
+		// Shuffle the numbers 
+	   
+		for (let i = this.numberBag.length - 1; i > 0; i--) {
+		  const j = Math.floor(Math.random() * (i + 1));
+		  [this.numberBag[i], this.numberBag[j]] = [this.numberBag[j], this.numberBag[i]];
+		}
+	  
+	  }
+	  
+	  start() {
+		this.cardArray.forEach(function (c) {
+				let ht = '<table>';
+			ht = ''
+			for (let i=0; i < 5; i++) {
+			
+			}
+			ht += '</table>';
+		}); 
+		
+	  }
+	}
+
+	class BingoCard {
+		constructor() {
+		this.grid = [];
+		let Bbag = Array.from(Array(15).keys(),n=>n+1);
+		let Ibag = Array.from(Array(15).keys(),n=>n+16);
+		let Nbag = Array.from(Array(15).keys(),n=>n+31);
+		let Gbag = Array.from(Array(15).keys(),n=>n+46);
+		let Obag = Array.from(Array(15).keys(),n=>n+61);
+		// Pull random numbers 
+		let nextNum = 0;
+		
+		for (let i = 0; i < 25; i++) {
+		  switch (true) {
+			case i <= 4:
+			this.shuffleBag(Bbag);
+			  nextNum = Bbag.pop();
+				break;
+			case i <= 9:
+			  this.shuffleBag(Ibag);
+			  nextNum = Ibag.pop();
+				break;
+					case i == 12:
+			  nextNum = 'FREE';
+				break;
+			case i <= 14:
+			  this.shuffleBag(Nbag);
+			  nextNum = Nbag.pop();
+				break;
+			case i <= 19:
+			  this.shuffleBag(Gbag);
+				nextNum = Gbag.pop();
+				break;
+			case i <= 24:
+			  this.shuffleBag(Obag);
+				nextNum = Obag.pop();
+			  break;
+		  }
+		  if (i == 12) {
+			this.grid.push(new Box('FREE', 1));
+		  } else {
+				this.grid.push(new Box(nextNum, 0));
+		  }
+		}
+	   // console.log(this.grid);
+	  }
+	  
+	  shuffleBag(arr) {
+		for (let i = arr.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[arr[i], arr[j]] = [arr[j], arr[i]];
+		}
+
+	}
+	  
+	  render() {
+		 
+	  }
+	}
+
+	class Box {
+		constructor(value, marked) {
+		this.number = value;
+		this.marked = marked;
+
+		
+	  }
+	}
+
+	let myBingo = new BingoGame(1);
+	myBingo.start();
+    
+  </script>
+  </body>
+</html>
